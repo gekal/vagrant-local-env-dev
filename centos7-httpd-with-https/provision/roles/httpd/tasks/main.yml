@@ -1,0 +1,46 @@
+---
+- name: Include default vars.
+  include_vars: "default.yml"
+
+- name: set timezone to Asia/Shanghai
+  timezone:
+    name: "Asia/Shanghai"
+
+# - name: Update all packages.
+#   yum:
+#     name: "*"
+#     state: "latest"
+
+- name: Dissable the services automatic start on boot.
+  service:
+    name: "{{ item }}"
+    enabled: no
+  with_items: "{{ disable_auto_startup_services }}"
+
+- name: Install httpd and modules.
+  yum:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ apache_packages }}"
+
+- name: Ensure docker has started state and enabled on boot.
+  service:
+    name: "{{ apache_service }}"
+    state: "started"
+    enabled: yes
+
+- name: Install certbot clients.
+  yum:
+    name: "{{ item }}"
+    state: "present"
+  with_items: "{{ certbot_client }}"
+
+- name: Install certificate for domain.
+  shell: |
+    certbot certonly -m "{{ owner_mail }}" \
+      --agree-tos --non-interactive --force-renewal \
+      --webroot -w "/var/www/html/" -d "{{ domain_name }}"
+  when: owner_mail is defined and domain_name is defined
+  notify:
+    - reset ssl certificate
+    - restart apache server

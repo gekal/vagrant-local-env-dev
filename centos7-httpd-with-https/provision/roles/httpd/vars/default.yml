@@ -1,0 +1,10 @@
+---
+apache_packages:
+  - httpd
+  - mod_ssl
+
+apache_service: httpd
+
+certbot_client:
+  - certbot
+  - python-certbot-apache

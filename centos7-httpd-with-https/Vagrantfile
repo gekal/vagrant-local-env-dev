@@ -1,0 +1,82 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Virtual box logical name
+  config.vm.define "gekal"
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = "centos/7"
+
+  # Define the name of hostname
+  config.vm.hostname = "server"
+
+  # Ensable automatic box update checking.
+  config.vm.box_check_update = true
+
+  # Create a forwarded port mapping which allows access to a specific port
+  config.vm.network "forwarded_port", guest:  80, host: 10080
+  config.vm.network "forwarded_port", guest: 443, host: 10443
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  config.vm.network "forwarded_port", id: "ssh", guest: 22, host: 2222, host_ip: "127.0.0.1"
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Create a public network, which generally matched to bridged network.
+  # config.vm.network "public_network"
+
+  # Share an additional folder to the guest VM.
+  config.vm.synced_folder ".", "/vagrant", type: "virtualbox", disabled: false
+
+  # Provider-specific configuration 
+  config.vm.provider "virtualbox" do |vb|
+    # Virtual box machine name.
+    vb.name = "httpd-server"
+
+    # Define the group of virturalbox
+    vb.customize [
+        "modifyvm", :id,
+        "--groups", "/devkit"
+    ]
+
+    # Display the VirtualBox GUI when booting the machine
+    vb.gui = false
+  
+    # Customize the amount of memory on the VM:
+    vb.memory = "2048"
+  end
+
+  # Run Ansible from the Vagrant VM
+  config.vm.provision "ansible_local" do |ansible|
+    # provision path
+    provisioning_path = "./provision"
+    # The command used to run playbooks.
+    ansible.playbook = "./provision/environment.yml"
+    # Set of inventory host variables to be included in the auto-generated inventory file.
+    ansible.host_vars = {
+      "default" => {
+        "ansible_connection" => "local",
+        "hostname" => "dockerstudy"
+      }
+    }
+    # Pass additional variables (with highest priority) to the playbook.
+    ansible.extra_vars = {
+      ansible_ssh_user: "vagrant",
+      owner_mail: "name@mail.com",
+      domain_name: "www.excale.com"
+    }
+  end
+end
