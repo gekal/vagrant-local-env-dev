@@ -44,7 +44,8 @@ vagrant up
 # 结果确认
 
 访问下面url，你就可以在浏览器中访问你的网站了
-    例：https：//www.sample.com
+    例： https://www.sample.com
 
 
+# ------------------------
 ＞＞＞时间仓促，后面在详细补吧＜＜＜
