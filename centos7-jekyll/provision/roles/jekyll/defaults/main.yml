@@ -1,0 +1,6 @@
+---
+# The services to be disable automatic start on boot.
+disable_auto_startup_services: []
+
+# The default host name of instance.
+hostname: "localhost"

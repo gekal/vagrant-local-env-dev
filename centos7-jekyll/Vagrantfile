@@ -1,0 +1,73 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  # Define the logical name of vm
+  config.vm.define "gekalvm"
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = "centos/7"
+
+  # Define the name of hostname
+  config.vm.hostname = "lovejekyll"
+
+  # Disable automatic box update checking.
+  config.vm.box_check_update = false
+
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", id: "ssh", guest: 22, host: 2222, host_ip: "127.0.0.1"
+
+  # Create a private network, which allows host-only access to the machine
+  config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Share an additional folder to the guest VM.
+  config.vm.synced_folder ".", "/vagrant", type: "virtualbox", disabled: false
+
+  # Provider-specific configuration.
+  config.vm.provider "virtualbox" do |vb|
+    # Virtual box machine name.
+    vb.name = "jekyllstudy"
+
+    # Define the group of virturalbox
+    vb.customize [
+        "modifyvm", :id,
+        "--groups", "/study"
+    ]
+
+    # Display the VirtualBox GUI when booting the machine
+    vb.gui = false
+  
+    # Customize the amount of memory on the VM:
+    vb.memory = "2048"
+  end
+
+  # proxy configuration
+  if Vagrant.has_plugin?("vagrant-proxyconf")
+    config.proxy.enabled  = true
+    config.proxy.http     = ENV['http_proxy']
+    config.proxy.https    = ENV['http_proxy']
+    config.proxy.no_proxy = "localhost,127.0.0.1,192.168.33.10"
+  end
+
+  # Run Ansible from the Vagrant VM
+  config.vm.provision "ansible_local" do |ansible|
+    # provision path
+    provisioning_path = "./provision"
+    # The command used to run playbooks.
+    ansible.playbook = "./provision/jekyllstudy.yml"
+    # Set of inventory host variables to be included in the auto-generated inventory file.
+    ansible.host_vars = {
+      "default" => {
+        "ansible_connection" => "local",
+        "hostname" => "jekyllstudy"
+      }
+    }
+    # Pass additional variables (with highest priority) to the playbook.
+    ansible.extra_vars = {
+      ansible_ssh_user: "vagrant",
+      http_proxy: ENV['http_proxy']
+    }
+  end
+end

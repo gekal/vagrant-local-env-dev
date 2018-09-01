@@ -1,0 +1,14 @@
+---
+- name: Include default vars of role.
+  include_vars: "default.yml"
+
+- name: Set current timezone to Asia/Tokyo
+  timezone:
+    name: "Asia/Tokyo"
+
+- name: Dissable the services automatic start on boot.
+  service:
+    name: "{{ item }}"
+    enabled: no
+  with_items: "{{ disable_auto_startup_services }}"
+

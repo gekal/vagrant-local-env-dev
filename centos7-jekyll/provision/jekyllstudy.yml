@@ -1,0 +1,5 @@
+---
+- name: jekyllstudy
+  hosts: "{{ target_hosts | default('gekalvm') }}"
+  roles:
+    - jekyll

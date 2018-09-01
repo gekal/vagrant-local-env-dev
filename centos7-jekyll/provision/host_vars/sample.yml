@@ -1,0 +1,9 @@
+---
+# User name with which to login to the remote server.
+ansible_ssh_user: "vagrant"
+
+# The name of the host to connect to.
+ansible_host: "127.0.0.1"
+
+# The default host name of IaaS instance.
+hostname: "lovejekyll"
