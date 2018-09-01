@@ -1,38 +1,18 @@
 # Docker over virtual box at windows
 
-## 前提条件
+## 参照資料
 
-* Window/Macos
-* Vagrant
-* virtual box
-    * [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
-    * [vagrant-proxyconf](https://github.com/tmatilai/vagrant-proxyconf)
-    * [vagrant-teraterm](https://github.com/tiibun/vagrant-teraterm)
-* Tera Term
+1. SCLリポジトリー
 
-## なぜ必要
+    > [リポジトリのリソース一覧](http://mirror.centos.org/centos/7/sclo/x86_64/)
 
-DockerがWindows/Macosをサポートしませんのため、WindowsのユーザがDockerを利用する場合、
+    ```bash
+    # リポジトリの追加
+    yum -y install centos-release-scl-rh centos-release-scl
 
-1. [Docker for Windows](https://docs.docker.com/docker-for-windows/)
-2. LinuxのVM上で構築
+    # ソフトのインストール
+    yum --enablerepo=centos-sclo-rh -y install rh-ruby25
 
-が一般だと思います。
-
-１の場合、ローカルにDocker for Windowsソフトをインストールしないといけないと加えて、Linuxでの操作と若干違うともあります。
-
-## 環境構築
-
-> 前提条件がクリスされること
-
-```powershell
-# 開始コマンド
-vagrant up
-```
-
-## その他
-社内で利用する場合、プロキシを通すのは一般です。下記の環境変数を設定すれば、ネット周りを意識せず使えます。
-
-```conf
-http_proxy="http://username:passwd@proxyserver:8080"
-```
+    # Bashの有効化
+    scl enable rh-ruby25 bash
+    ```

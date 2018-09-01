@@ -12,3 +12,23 @@
     enabled: no
   with_items: "{{ disable_auto_startup_services }}"
 
+- name: Install scl repositories
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "centos-release-scl"
+    - "centos-release-scl-rh"
+
+- name: Install the rh-ruby25 from the centos-sclo-rh repo
+  yum:
+    name: rh-ruby25
+    enablerepo: centos-sclo-rh
+    state: present
+  notify:
+    - enable ruby bash
+
+- name: Flush handlers immediately
+  meta:
+    flush_handlers
+
