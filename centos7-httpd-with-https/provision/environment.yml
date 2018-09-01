@@ -1,5 +1,0 @@
----
-- name: httpd-server
-  hosts: "{{ target_hosts | default('gekal') }}"
-  roles:
-    - httpd

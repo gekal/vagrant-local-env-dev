@@ -23,7 +23,7 @@
     state: "present"
   with_items: "{{ apache_packages }}"
 
-- name: Ensure docker has started state and enabled on boot.
+- name: Ensure apache service has started state and enabled on boot.
   service:
     name: "{{ apache_service }}"
     state: "started"
