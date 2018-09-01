@@ -1,0 +1,5 @@
+---
+- name: dockerstudy
+  hosts: "{{ target_hosts | default('gekalvm') }}"
+  roles:
+    - docker

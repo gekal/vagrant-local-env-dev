@@ -1,0 +1,58 @@
+---
+- name: Include default vars of role.
+  include_vars: "default.yml"
+
+- name: Set current timezone to Asia/Tokyo
+  timezone:
+    name: "Asia/Tokyo"
+
+- name: Dissable the services automatic start on boot.
+  service:
+    name: "{{ item }}"
+    enabled: no
+  with_items: "{{ disable_auto_startup_services }}"
+
+- name: Add docker-ce-stable repository.
+  yum_repository:
+    name: docker-ce-stable
+    description: Docker CE Stable - $basearch
+    baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+    enabled: yes
+    gpgcheck: yes
+    gpgkey:
+      - "https://download.docker.com/linux/centos/gpg"
+
+- name: Install docker-ce.
+  yum:
+    name: "docker-ce"
+    state: "present"
+
+- name: Ensure docker has started state and enabled on boot.
+  service:
+    name: "docker"
+    state: "started"
+    enabled: yes
+
+- name: Determine available groups.
+  getent:
+    database: group
+
+- name: Add current user to docker user groups.
+  user:
+    name: "{{ ansible_ssh_user }}"
+    groups: "{{ docker_user_group }}"
+    append: yes
+  when: docker_user_group in ansible_facts.getent_group
+
+- name: Create docker service folder.
+  file:
+    path: "/etc/systemd/system/docker.service.d/"
+    state: directory
+    mode: "u=rwx,g=rx,o=rx"
+
+- name: Configure proxy for doccker service.
+  template:
+    src: "http-proxy.conf.j2"
+    dest: "/etc/systemd/system/docker.service.d/http-proxy.conf"
+    mode: "u=rw,g=r,o="
+  notify: restart docker
