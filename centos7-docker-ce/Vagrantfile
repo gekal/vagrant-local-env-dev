@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
   # Provider-specific configuration.
   config.vm.provider "virtualbox" do |vb|
     # Virtual box machine name.
-    vb.name = "study01"
+    vb.name = "dockerstudy"
 
     # Define the group of virturalbox
     vb.customize [
