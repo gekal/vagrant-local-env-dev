@@ -32,3 +32,14 @@
   meta:
     flush_handlers
 
+- name: Installs latest available version of jekyll.
+  gem:
+    name: jekyll
+    state: latest
+  environment:
+    # LD_LIBRARY_PATH: '/opt/rh/rh-ruby25/root/usr/lib64:{{ ansible_env.LD_LIBRARY_PATH }}'
+    PATH: '/opt/rh/rh-ruby25/root/usr/bin:{{ ansible_env.PATH }}'
+
+# - name: test
+#   shell: gem install jekyll bundler
+# source /opt/rh/rh-ruby25/enable
