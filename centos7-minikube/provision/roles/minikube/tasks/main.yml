@@ -1,0 +1,29 @@
+---
+- name: Include default vars of role.
+  include_vars: "default.yml"
+
+- name: Enable iptables bridge.
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: 1
+    state: present
+
+- name: Download minikube.
+  get_url:
+    url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+    dest: /usr/bin/minikube
+    mode: 0755
+
+- name: Download kubectl.
+  get_url:
+    url: https://storage.googleapis.com/kubernetes-release/release/v1.11.2/bin/linux/amd64/kubectl
+    dest: /usr/bin/kubectl
+    mode: 0755
+
+- name: Create kube directory.
+  file:
+    path: "{{ ansible_user_dir }}/.kube"
+    state: directory
+  notify:
+    - "Create kube config file"
+    - "Start minikube none driver"

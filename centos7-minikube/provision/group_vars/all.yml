@@ -1,0 +1,3 @@
+---
+# Toggles the use of privilege escalation.
+ansible_become: true

@@ -1,0 +1,12 @@
+---
+# The services to be disable automatic start on boot.
+disable_auto_startup_services: []
+
+# The default host name of instance.
+hostname: "localhost"
+
+# default name of docker group name
+docker_user_group: "docker"
+
+# default proxy configurations
+docker_proxy_env: []

@@ -1,0 +1,18 @@
+---
+# User name with which to login to the remote server.
+ansible_ssh_user: "vagrant"
+
+# The name of the host to connect to.
+ansible_host: "127.0.0.1"
+
+# The default host name of IaaS instance.
+hostname: "lovedocker"
+
+# Is docker proxy enabled.
+docker_proxy_enabled: true
+
+# Docker proxy details.
+docker_proxy_env:
+  - "HTTP_PROXY={{ http_proxy }}"
+  - "HTTPS_PROXY={{ http_proxy }}"
+  - "NO_PROXY=localhost,127.0.0.1"
