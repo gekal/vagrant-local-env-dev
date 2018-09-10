@@ -1,0 +1,11 @@
+export MINIKUBE_WANTUPDATENOTIFICATION=false
+export MINIKUBE_WANTREPORTERRORPROMPT=false
+export MINIKUBE_HOME="/home/{{ ansible_ssh_user }}"
+export CHANGE_MINIKUBE_NONE_USER=true
+
+if [ ! -d "/home/{{ ansible_ssh_user }}/.kube" ]; then
+  mkdir -p "/home/{{ ansible_ssh_user }}/.kube"
+  touch "/home/{{ ansible_ssh_user }}/.kube/config"
+fi
+
+export KUBECONFIG="/home/{{ ansible_ssh_user }}/.kube/config"

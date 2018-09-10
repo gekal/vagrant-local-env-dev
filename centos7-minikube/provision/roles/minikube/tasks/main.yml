@@ -11,19 +11,18 @@
 - name: Download minikube.
   get_url:
     url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-    dest: /usr/bin/minikube
+    dest: /usr/local/bin/minikube
     mode: 0755
 
 - name: Download kubectl.
   get_url:
     url: https://storage.googleapis.com/kubernetes-release/release/v1.11.2/bin/linux/amd64/kubectl
-    dest: /usr/bin/kubectl
+    dest: /usr/local/bin/kubectl
     mode: 0755
 
-- name: Create kube directory.
-  file:
-    path: "{{ ansible_user_dir }}/.kube"
-    state: directory
-  notify:
-    - "Create kube config file"
-    - "Start minikube none driver"
+- name: Configure settings for minikube.
+  template:
+    src: "minikube.sh.j2"
+    dest: "/etc/profile.d/minikube.sh"
+    mode: "u=rw,g=r,o=r"
+  notify: Start minikube none driver

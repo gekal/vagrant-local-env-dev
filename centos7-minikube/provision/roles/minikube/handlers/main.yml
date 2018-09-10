@@ -1,14 +1,7 @@
 ---
-- name: Create kube config file
-  file:
-    path: "{{ ansible_user_dir }}/.kube/config"
-    state: touch
-
 - name: Start minikube none driver
-  shell: minikube start --vm-driver=none
+  shell: |
+    source /etc/profile.d/minikube.sh && \
+    minikube start --vm-driver=none
   environment:
-    MINIKUBE_WANTUPDATENOTIFICATION: false
-    MINIKUBE_WANTREPORTERRORPROMPT: false
-    MINIKUBE_HOME: "{{ ansible_user_dir }}/.kube"
-    CHANGE_MINIKUBE_NONE_USER: true
-    KUBECONFIG: "{{ ansible_user_dir }}/.kube/config"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
