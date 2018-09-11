@@ -19,6 +19,20 @@
 vagrant up
 ```
 
+## Minikubeコマンド
+
+```bash
+# ステータス確認
+sudo -E env "PATH=/usr/local/bin:$PATH" minikube status
+
+# 開始
+sudo -E env "PATH=/usr/local/bin:$PATH" minikube start --vm-driver=none
+
+# 停止
+sudo -E env "PATH=/usr/local/bin:$PATH" minikube stop
+```
+
+
 ## その他
 社内で利用する場合、プロキシを通すのは一般です。下記の環境変数を設定すれば、ネット周りを意識せず使えます。
 
