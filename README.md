@@ -8,3 +8,7 @@ local dev evn of virtual box
 [Docker環境](/centos7-docker-ce)
 ------------
 ローカルDockerを構築する。
+
+[Minikube環境](/centos7-minikube)
+------------
+ローカルMinikubeを構築する。
