@@ -25,6 +25,10 @@ DockerがWindows/Macosをサポートしませんのため、Windowsのユーザ
 
 > 前提条件がクリスされること
 
+下記のリポジトリをローカルにクローンして、centos7-docker-ceフォルダーに移動する。
+
+    https://github.com/gekal/vagrant-local-env-dev.git
+
 ```powershell
 # 開始コマンド
 vagrant up
