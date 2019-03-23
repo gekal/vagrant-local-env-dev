@@ -3,6 +3,9 @@
 
 Vagrant.configure("2") do |config|
 
+  # Define the private ip list of vm
+  private_ips = []
+
   # Define the logical name of vm
   config.vm.define "gekalvm"
 
@@ -19,8 +22,10 @@ Vagrant.configure("2") do |config|
   # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
   config.vm.network "forwarded_port", id: "ssh", guest: 22, host: 2222, host_ip: "127.0.0.1"
 
-  # Create a private network, which allows host-only access to the machine
-  config.vm.network "private_network", ip: "192.168.33.10"
+  private_ips.each{|private_ip|
+    # Create a private network, which allows host-only access to the machine
+    config.vm.network "private_network", ip: private_ip
+  }
 
   # Share an additional folder to the guest VM.
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox", disabled: false
@@ -39,8 +44,11 @@ Vagrant.configure("2") do |config|
     # Display the VirtualBox GUI when booting the machine
     vb.gui = false
   
-    # Customize the amount of memory on the VM:
+    # Customize the amount of memory on the VM
     vb.memory = "2048"
+
+    # Customize the count of cpu on the VM
+    vb.cpus = 2
   end
 
   # proxy configuration
@@ -48,7 +56,7 @@ Vagrant.configure("2") do |config|
     config.proxy.enabled  = true
     config.proxy.http     = ENV['http_proxy']
     config.proxy.https    = ENV['http_proxy']
-    config.proxy.no_proxy = "localhost,127.0.0.1,192.168.33.10"
+    config.proxy.no_proxy = "localhost,127.0.0.1,".concat(private_ips.join(","))
   end
 
   # Run Ansible from the Vagrant VM
@@ -71,7 +79,7 @@ Vagrant.configure("2") do |config|
       docker_proxy_env: [
         "HTTP_PROXY={{ http_proxy }}",
         "HTTPS_PROXY={{ http_proxy }}",
-        "NO_PROXY=localhost,127.0.0.1,192.168.33.10"
+        "NO_PROXY=localhost,127.0.0.1,".concat(private_ips.join(","))
       ]
     }
   end
