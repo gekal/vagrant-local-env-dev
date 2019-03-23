@@ -14,11 +14,20 @@
     dest: /usr/local/bin/minikube
     mode: 0755
 
-- name: Download kubectl.
-  get_url:
-    url: https://storage.googleapis.com/kubernetes-release/release/v1.11.2/bin/linux/amd64/kubectl
-    dest: /usr/local/bin/kubectl
-    mode: 0755
+- name: Add kubernetes repository.
+  yum_repository:
+    name: Kubernetess
+    description: Docker CE Stable - $basearch
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    enabled: yes
+    gpgcheck: yes
+    gpgkey:
+      - "https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg"
+
+- name: Install kubectl.
+  yum:
+    name: "kubectl"
+    state: "present"
 
 - name: Configure settings for minikube.
   template:

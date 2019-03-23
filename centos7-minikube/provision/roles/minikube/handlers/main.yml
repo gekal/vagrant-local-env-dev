@@ -2,6 +2,7 @@
 - name: Start minikube none driver
   shell: |
     source /etc/profile.d/minikube.sh && \
-    minikube start --vm-driver=none
+    minikube start --vm-driver=none && \
+    chmod go+r /home/{{ ansible_ssh_user }}/.minikube/*.key
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
