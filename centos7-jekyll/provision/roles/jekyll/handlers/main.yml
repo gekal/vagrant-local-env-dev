@@ -1,3 +1,0 @@
----
-- name: enable ruby bash
-  command: scl enable rh-ruby25 bash
