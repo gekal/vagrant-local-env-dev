@@ -57,12 +57,10 @@
     mode: "u=rw,g=r,o="
   notify: restart docker
 
-- name: Install python-pip.
-  yum:
-    name: "python-pip"
-    state: "present"
-
-- name: Install docker-compose.
-  pip:
-    name: "docker-compose"
-    state: "present"
+# (Linux)https://docs.docker.com/compose/install/
+- name: Install docker-compose(1.25.3).
+  get_url:
+    # echo "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)"
+    url: https://github.com/docker/compose/releases/download/1.25.3/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: "0755"
