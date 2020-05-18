@@ -28,10 +28,11 @@ Vagrant.configure("2") do |config|
   }
 
   # Share an additional folder to the guest VM.
-  config.vm.synced_folder ".", "/vagrant", type: "virtualbox", disabled: false
+  config.vm.synced_folder ".", "/vagrant", disabled: false
 
   # Provider-specific configuration.
   config.vm.provider "virtualbox" do |vb|
+
     # Virtual box machine name.
     vb.name = "dockerstudy"
 
@@ -47,8 +48,22 @@ Vagrant.configure("2") do |config|
     # Customize the amount of memory on the VM
     vb.memory = "2048"
 
-    # Customize the count of cpu on the VM
+    # Customize the count of cpu on the VM`
     vb.cpus = 2
+  end
+
+  # Provider-specific configuration.
+  config.vm.provider "hyperv" do |h|
+
+    # Virtual box machine name.
+    h.vmname = "dockerstudy"
+
+    # Customize the amount of memory on the VM
+    h.memory = "2048"
+
+    # Customize the count of cpu on the VM
+    h.cpus = 2
+
   end
 
   # proxy configuration
